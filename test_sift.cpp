@@ -56,11 +56,28 @@ int check_window(cv::Mat& img, std::vector<double>& res){
     double edge_x = (res[0]-res[2])+ res[2]*2.5;
     double edge_y = (res[1]-res[3])+ res[1]*2.5;
 
-    if(img.cols > edge_x){
+    /*
+    if(img.cols > edge_x && img.rows > edge_y){
+	
+    	double diff_x = (img.cols - edge_x)/double(res[2]);
+    	double diff_y = (img.rows - edge_y)/double(res[3]);
+		
+	if(diff_x > 1 ){
+		return 2;
+	}
+	if (diff_y > 1){
+		return 3;
+	}
+
 	return 0;
+    }*/
+
+    if(img.rows > edge_x){
+        return 0;
     }
 
-    if(img.rows > edge_y){
+    
+    if(img.cols > edge_y){
         return 0;
     }
 
@@ -77,6 +94,15 @@ void ROI_img(cv::Mat& img, int& res_check, std::vector<double>& res){
         cv::Mat roi_img(img, cv::Rect(res[0]-res[2], res[1]-res[3], res[2]*1.5, res[3]*1.5));
     	cv::imwrite("cut.jpg", roi_img);
     }
+    if (res_check == 2) {
+        cv::Mat roi_img(img, cv::Rect(res[0]-res[2], res[1]-res[3], res[2]*3, res[3]*3));
+        cv::imwrite("cut.jpg", roi_img);
+    }
+    if (res_check == 3) {
+        cv::Mat roi_img(img, cv::Rect(res[0]-res[2], res[1]-res[3], res[2]*3, res[3]*3));
+        cv::imwrite("cut.jpg", roi_img);
+    }
+
 }
 
 int main(int argc, char *argv[]) {
